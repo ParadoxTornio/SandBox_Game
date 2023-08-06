@@ -10,8 +10,10 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.elements_button = pygame.image.load('button_0.png')
+        self.elements_button_rect = pygame.Rect(WIDTH - 50, 0, 50, 50)
         self.screen.fill(BLACK)
-        self.tutorial_screen()
+        self.screen.blit(self.elements_button, self.elements_button_rect)
+        pygame.display.flip()
         self.running = True
 
     def new(self):
@@ -32,25 +34,31 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    self.screen.fill((0, 0, 0))
+                if event.button == 1 and self.elements_button_rect.collidepoint(event.pos):
+                    self.menu()
 
     def draw(self):
         pygame.display.flip()
 
-    def tutorial_screen(self):
-        sys_font = pygame.font.SysFont('Arial', 75, False, False)
-        text_surface = sys_font.render('Чтобы выбрать любой элемент', True, (255, 255, 255))
-        text_surface_2 = sys_font.render(' нажми на кнопку в правом верхнем углу', True, (255, 255, 255))
-        text_rect = text_surface.get_rect()
-        text_rect_2 = text_surface_2.get_rect()
-        text_rect.center = (WIDTH // 2, 30)
-        text_rect_2.center = (WIDTH // 2, 100)
-        self.screen.blit(text_surface, text_rect)
-        self.screen.blit(text_surface_2, text_rect_2)
-
-    def game_screen(self):
-        pass
+    def menu(self):
+        self.screen.fill(BLACK)
+        self.update()
+        self.screen.blit(self.elements_button, (50, 50))
+        self.screen.blit(self.elements_button, (150, 50))
+        self.screen.blit(self.elements_button, (250, 50))
+        self.screen.blit(self.elements_button, (350, 50))
+        self.screen.blit(self.elements_button, (450, 50))
+        self.screen.blit(self.elements_button, (550, 50))
+        self.screen.blit(self.elements_button, (650, 50))
+        self.screen.blit(self.elements_button, (750, 50))
+        self.screen.blit(self.elements_button, (850, 50))
+        self.screen.blit(self.elements_button, (950, 50))
+        self.screen.blit(self.elements_button, (1050, 50))
+        self.screen.blit(self.elements_button, (1150, 50))
+        self.screen.blit(self.elements_button, (50, 150))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
 
 game = Game()
