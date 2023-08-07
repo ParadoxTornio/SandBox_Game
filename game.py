@@ -32,9 +32,10 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and self.menu.elements_button_rect.collidepoint(event.pos):
-                    self.menu.show_menu()
+            # elif event.type == pygame.MOUSEBUTTONDOWN:
+            #     if event.button == 1 and self.menu.elements_button_rect.collidepoint(event.pos):
+            #         self.menu.show_menu()
+            self.menu.handle_events(event)
 
     def draw(self):
         pygame.display.flip()

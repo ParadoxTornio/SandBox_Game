@@ -9,28 +9,46 @@ class Button(pygame.sprite.Sprite):
         self.text = text
         self.picture = pygame.image.load(image_path)
         self.image = pygame.Surface((50, 50))
-        self.image_rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
         self.image.blit(self.picture, (0, 0))
-        self.image_rect.x = position[0]
-        self.image_rect.y = position[1]
-    def update(self):
+        self.rect.x = position[0]
+        self.rect.y = position[1]
 
+    def update(self, event):
+        mouse_pos = pygame.mouse.get_pos()
+        # for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1 and self.rect.collidepoint(mouse_pos):
+                self.click_action()
+
+    def click_action(self):
+        print('работает')
+
+    def draw(self, screen):
+        screen.blit(self.picture, self.rect)
+
+
+# class MenuButton(Button):
+#     def click_action(self):
+#
 
 
 class Menu:
     def __init__(self, screen):
         self.screen = screen
-        self.elements_button = pygame.image.load('images/button_0.png')
-        self.elements_button_rect = pygame.Rect(WIDTH - 50, 0, 50, 50)
-        self.screen.blit(self.elements_button, self.elements_button_rect)
-        self.esc_button = pygame.image.load('images/esc_button.png')
-        self.esc_button_rect = pygame.Rect(WIDTH - 50, 0, 50, 50)
+        # self.elements_button = pygame.image.load('images/button_0.png')
+        # self.elements_button_rect = pygame.Rect(WIDTH - 50, 0, 50, 50)
+        # self.screen.blit(self.elements_button, self.elements_button_rect)
+        self.elements_button = Button('images/button_0.png', (50, 50), 'button')
+        # self.esc_button = pygame.image.load('images/esc_button.png')
+        # self.esc_button_rect = pygame.Rect(WIDTH - 50, 0, 50, 50)
         self.menu_buttons_group = pygame.sprite.Group()
-        self.menu_buttons_group.add(self.elements_button_rect, self.esc_button_rect)
+        self.menu_buttons_group.add(self.elements_button)
+        self.menu_buttons_group.draw(screen)
 
     def show_menu(self):
         self.screen.fill(BLACK)
-        self.screen.blit(self.esc_button, self.esc_button_rect)
+        # self.screen.blit(self.esc_button, self.esc_button_rect)
         pygame.display.flip()
         self.screen.blit(self.elements_button, (50, 50))
         self.screen.blit(self.elements_button, (150, 50))
@@ -45,11 +63,15 @@ class Menu:
         self.screen.blit(self.elements_button, (1050, 50))
         self.screen.blit(self.elements_button, (1150, 50))
         self.screen.blit(self.elements_button, (50, 150))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and self.esc_button_rect.collidepoint(event.pos):
-                    # self.menu_buttons_group.vi
-                    pass
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         pygame.quit()
+        #         exit()
+        #     elif event.type == pygame.MOUSEBUTTONDOWN:
+        #     if event.button == 1 and self.esc_button_rect.collidepoint(event.pos):
+        #         # self.menu_buttons_group.vi
+        #         pass
+
+    def handle_events(self, event):
+        for button in self.menu_buttons_group:
+            button.update(event)
