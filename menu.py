@@ -14,7 +14,7 @@ class Button(pygame.sprite.Sprite):
         self.image_rect.x = position[0]
         self.image_rect.y = position[1]
     def update(self):
-        self.image_rect.
+
 
 
 class Menu:
