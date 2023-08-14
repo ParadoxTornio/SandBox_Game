@@ -38,8 +38,8 @@ class Game:
             self.menu.handle_events(event)
 
     def draw(self):
-        self.screen.fill(BLACK)
-        self.menu.draw()
+        # self.screen.fill(BLACK)
+        # self.menu.draw()
         pygame.display.flip()
 
 
