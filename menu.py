@@ -12,8 +12,6 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
-        self.is_visible = False
-        # if self.is_visible:
         self.image.blit(self.picture, (0, 0))
 
     def update(self, event):
@@ -24,10 +22,7 @@ class Button(pygame.sprite.Sprite):
                 self.click_action()
 
     def click_action(self):
-        print('работает')
-
-    def draw(self, screen):
-        print('3478378')
+        print('!')
 
 
 class MenuButton(Button):
@@ -44,11 +39,20 @@ class MenuButton(Button):
             self.is_open = True
             self.menu_object.show_menu()
 
+    def update(self, event):
+        mouse_pos = pygame.mouse.get_pos()
+        # for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1 and self.rect.collidepoint(mouse_pos):
+                self.is_open = False
+                self.click_action()
+
 
 class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.elements_button = MenuButton('images/button_0.png', (WIDTH - 75, 25), 'button', self)
+        self.is_visible = True
         self.menu_buttons_group = pygame.sprite.Group()
         self.menu_buttons_group.add(self.elements_button)
 
@@ -68,6 +72,9 @@ class Menu:
         concrete_button = Button('images/element_buttons/concrete.png', (450, 75), 'button')
         sand_button = Button('images/element_buttons/sand.png', (750, 75), 'button')
         stone_button = Button('images/element_buttons/stone.png', (1050, 75), 'button')
+        esc_button = MenuButton('images/esc_button.png', (WIDTH - 75, 25), 'button', self)
+        esc_button_rect = pygame.Rect((WIDTH - 75, 25), (50, 50))
+        self.menu_buttons_group.add(esc_button)
         self.menu_buttons_group.add(water_button)
         self.menu_buttons_group.add(fire_button)
         self.menu_buttons_group.add(metal_button)
@@ -82,17 +89,17 @@ class Menu:
         self.menu_buttons_group.add(c4_button)
         self.menu_buttons_group.add(gunpowder_button)
         self.menu_buttons_group.draw(self.screen)
-        # for event in pygame.event.get():
-        #     if event.type == pygame.QUIT:
-        #         pygame.quit()
-        #         exit()
-        #     elif event.type == pygame.MOUSEBUTTONDOWN:
-        #     if event.button == 1 and self.esc_button_rect.collidepoint(event.pos):
-        #         # self.menu_buttons_group.vi
-        #         pass
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and esc_button_rect.collidepoint(mouse_pos):
+                    # esc_button.update(event)
+                    self.screen.fill(BLACK)
 
     def hide_menu(self):
-        self.menu_buttons_group.clear(self.screen, )
+        # self.menu_buttons_group.clear(self.screen, )
+        self.screen.fill(BLACK)
+        pygame.display.flip()
 
     def draw(self):
         self.menu_buttons_group.draw(self.screen)
