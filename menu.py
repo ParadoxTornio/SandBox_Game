@@ -8,18 +8,19 @@ class Button(pygame.sprite.Sprite):
         self.position = position
         self.text = text
         self.picture = pygame.image.load(image_path)
-        self.image = pygame.Surface((50, 50))
+        self.image = pygame.Surface((50, 80))
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
         self.is_visible = False
         # if self.is_visible:
         self.image.blit(self.picture, (0, 0))
-        # sys_font = pygame.font.SysFont('Arial', 25, False, False)
-        # text_surface = sys_font.render(self.text, True, (194, 23, 29))
-        # text_rect = text_surface.get_rect()
-        # text_rect.x =
-        # self.image.blit(text_surface, text_rect)
+        sys_font = pygame.font.SysFont('Arial', 15, False, False)
+        text_surface = sys_font.render(self.text, True, (194, 23, 29))
+        text_rect = text_surface.get_rect()
+        text_rect.x = 0
+        text_rect.y = 50
+        self.image.blit(text_surface, text_rect)
 
     def update(self, event):
         mouse_pos = pygame.mouse.get_pos()
@@ -72,7 +73,7 @@ class Menu:
         c4_button = Button('images/element_buttons/C4.png', (1150, 75), 'С-4')
         gunpowder_button = Button('images/element_buttons/gunpowder.png', (50, 175), 'порох')
         glass_button = Button('images/element_buttons/glass.png', (550, 75), 'стекло')
-        buf_metal_button = Button('images/element_buttons/buffed_metal.png', (350, 75), 'укреплённый металл')
+        buf_metal_button = Button('images/element_buttons/buffed_metal.png', (350, 75), 'металл+')
         lava_button = Button('images/element_buttons/lava.png', (850, 75), 'лава')
         poison_button = Button('images/element_buttons/poison.png', (950, 75), 'кислота')
         bricks_button = Button('images/element_buttons/bricks.png', (650, 75), 'кирпичи')
