@@ -10,7 +10,9 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
-        self.screen.fill(BLACK)
+        self.background = pygame.image.load('images/background_2.png')
+        self.screen.blit(self.background, (0, 0))
+        # self.screen.fill(BLACK)
         self.menu = Menu(self.screen)
         pygame.display.flip()
         self.running = True
@@ -38,8 +40,6 @@ class Game:
             self.menu.handle_events(event)
 
     def draw(self):
-        # self.screen.fill(BLACK)
-        # self.menu.draw()
         pygame.display.flip()
 
 
