@@ -1,6 +1,8 @@
 import pygame
 from config import *
 
+ELEMENT_SELECTED = pygame.USEREVENT + 1
+
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, image_path, position, text):
@@ -29,8 +31,7 @@ class Button(pygame.sprite.Sprite):
                 self.click_action()
 
     def click_action(self):
-        self.selected_element = self.text
-        print(self.selected_element)
+        pygame.event.post(pygame.event.Event(ELEMENT_SELECTED, message=self.text))
 
 
 class MenuButton(Button):
