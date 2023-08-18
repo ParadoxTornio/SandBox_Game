@@ -19,15 +19,19 @@ class Element(pygame.sprite.Sprite):
 
 
 class SolidElement(Element):
-    # def __init__(self):
-    pass
+    def __init__(self, solidity, fragility):
+        pygame.sprite.Sprite.__init__(self)
+        self.solidity = solidity
+        self.fragility = fragility
 
 
 class GasElement(Element):
-    # def __init__(self):
-    pass
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
 
 
 class LiquidElement(Element):
-    # def __init__(self):
-    pass
+    def __init__(self, ph, liquidity):
+        pygame.sprite.Sprite.__init__(self)
+        self.ph = ph
+        self.liquidity = liquidity
