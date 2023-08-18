@@ -17,6 +17,10 @@ class Element(pygame.sprite.Sprite):
     def draw_element(self):
         pass
 
+    def change_position(self, pos):
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+
 
 class SolidElement(Element):
     def __init__(self, name, image_path, pos, solidity, fragility):

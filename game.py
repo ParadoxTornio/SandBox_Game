@@ -34,15 +34,16 @@ class Game:
 
     def events(self):
         for event in pygame.event.get():
+            mouse_event = pygame.mouse.get_pressed()
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == ELEMENT_SELECTED:
                 self.selected_element = event.message
                 print(event.message)
-            elif event.type == pygame.MOUSEBUTTONDOWN and self.selected_element:
-                if event.button == 1:
+            elif (mouse_event[0] or mouse_event[2]) and self.selected_element:
+                if mouse_event[0]:
                     self.add_element()
-                elif event.button == 3:
+                elif mouse_event[2]:
                     self.selected_element = None
             self.menu.handle_events(event)
 
@@ -53,9 +54,9 @@ class Game:
     def add_element(self):
         mouse_pos = pygame.mouse.get_pos()
         copy_element = copy.copy(self.selected_element)
-        copy_element.pos = mouse_pos
+        copy_element.change_position(mouse_pos)
         self.elements_group.add(copy_element)
-        print(mouse_pos)
+        print(mouse_pos, copy_element.pos)
 
 
 game = Game()
