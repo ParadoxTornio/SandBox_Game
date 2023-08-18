@@ -1,11 +1,12 @@
 import pygame
 from config import *
+from elements import SolidElement, LiquidElement, FireElement
 
 ELEMENT_SELECTED = pygame.USEREVENT + 1
 
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, text):
+    def __init__(self, image_path, position, text, element_object=None):
         pygame.sprite.Sprite.__init__(self)
         self.position = position
         self.text = text
@@ -21,7 +22,7 @@ class Button(pygame.sprite.Sprite):
         text_rect = text_surface.get_rect()
         text_rect.x = 0
         text_rect.y = 50
-        self.selected_element = 'nothing'
+        self.element_object = element_object
         self.image.blit(text_surface, text_rect)
 
     def update(self, event):
@@ -31,7 +32,7 @@ class Button(pygame.sprite.Sprite):
                 self.click_action()
 
     def click_action(self):
-        pygame.event.post(pygame.event.Event(ELEMENT_SELECTED, message=self.text))
+        pygame.event.post(pygame.event.Event(ELEMENT_SELECTED, message=self.element_object))
 
 
 class MenuButton(Button):
@@ -68,9 +69,12 @@ class Menu:
         self.menu_buttons_group.clear(self.screen, self.background_image)
 
     def create_buttons(self):
-        water_button = Button('images/element_buttons/water.png', (100, 525), 'вода')
-        fire_button = Button('images/element_buttons/fire.png', (175, 525), 'огонь')
-        metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл')
+        water_button = Button('images/element_buttons/water.png', (100, 525), 'вода',
+                              LiquidElement('вода', 'images/water_frame.png', [0, 0], 0, 10))
+        fire_button = Button('images/element_buttons/fire.png', (175, 525), 'огонь',
+                             FireElement('огонь', 'images/fire_frame.png', [0, 0]))
+        metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',
+                              SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5))
         # c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4')
         # gunpowder_button = Button('images/element_buttons/gunpowder.png', (1000, 525), 'порох')
         # glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло')
