@@ -14,6 +14,9 @@ class Game:
         self.background = pygame.image.load('images/background_2.png')
         self.table_rect = pygame.rect.Rect(0, 82, 1280, 424)
         self.screen.blit(self.background, (0, 0))
+        self.clear_picture = pygame.image.load('images/musorka.png')
+        self.clear_image = pygame.Surface((50, 50))
+        self.clear_rect = self.clear_image.get_rect()
         self.menu = Menu(self.screen)
         pygame.display.flip()
         self.running = True
@@ -38,6 +41,11 @@ class Game:
             mouse_event = pygame.mouse.get_pressed()
             if event.type == pygame.QUIT:
                 self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and self.clear_rect.collidepoint(pygame.mouse.get_pos()):
+                    # self.elements_group.clear(self.screen, self.background)
+                    # self.screen.blit(self.background, (0, 0))
+                    print('clear')
             elif event.type == ELEMENT_SELECTED:
                 self.selected_element = event.message
                 print(event.message)
@@ -51,6 +59,7 @@ class Game:
 
     def draw(self):
         self.elements_group.draw(self.screen)
+        self.screen.blit(self.clear_picture, (25, 25))
         pygame.display.flip()
 
     def add_element(self):
