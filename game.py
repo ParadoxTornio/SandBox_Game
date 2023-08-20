@@ -12,6 +12,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load('images/background_2.png')
+        self.table_rect = pygame.rect.Rect(0, 82, 1280, 424)
         self.screen.blit(self.background, (0, 0))
         self.menu = Menu(self.screen)
         pygame.display.flip()
@@ -40,7 +41,8 @@ class Game:
             elif event.type == ELEMENT_SELECTED:
                 self.selected_element = event.message
                 print(event.message)
-            elif (mouse_event[0] or mouse_event[2]) and self.selected_element:
+            elif (mouse_event[0] or mouse_event[2]) and self.selected_element and \
+                    self.table_rect.collidepoint(pygame.mouse.get_pos()):
                 if mouse_event[0]:
                     self.add_element()
                 elif mouse_event[2]:
