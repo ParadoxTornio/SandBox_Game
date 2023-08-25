@@ -32,14 +32,16 @@ class SolidElement(Element):
 class FireElement(Element):
     def __init__(self, name, image_path, pos):
         super().__init__(name, image_path, pos)
+        self.counter = 0
 
-    def update(self):
-        counter = 0
-        for i in range(10):
-            if counter == 10:
-                self.kill()
-            counter += 1
-        pygame.display.flip()
+    # def update(self):
+    #     print(self.counter)
+    #     if self.counter == 60:
+    #         pygame.sprite.Sprite.kill(self)
+    #         self.counter = 0
+    #     else:
+    #         self.counter += 1
+    #     self.kill()
 
 
 class LiquidElement(Element):
@@ -49,6 +51,6 @@ class LiquidElement(Element):
         self.liquidity = liquidity
 
     def update(self):
-        if self.rect.y <= 500:
+        if self.rect.y <= 503:
             # print(self.rect.center, id(self))
             self.rect.y += self.liquidity // 5

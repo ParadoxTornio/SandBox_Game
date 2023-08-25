@@ -31,6 +31,7 @@ class Game:
     def run(self):
         while self.running:
             self.clock.tick(FPS)
+            print(self.clock.get_fps())
             self.events()
             self.update()
             self.draw()
@@ -40,35 +41,26 @@ class Game:
 
     def events(self):
         collision = pygame.sprite.groupcollide(self.elements_group, self.elements_group, False, False, custom_collision)
-        k = collision.keys()
         v = list(collision.values())
-        # # print(k)
-        # # print(v)
-        # if v:
-        #     val = [value for value in v[0] if value not in k]
-        #     print(val)
-        # sprite_1_list =
-        # for sprite_1, sprite_2_list in collision.items():
-        #     for sprite_2 in sprite_2_list:
-        #         if sprite_1 == sprite_2:
-        #             pass
-        #         else:
-        #             if sprite_1.rect.x >= 0 and sprite_1.rect.right <= WIDTH or \
-        #                     sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH:
-        #                 print(id(sprite_1), id(sprite_2))
-        #                 if sprite_1.rect.x < sprite_2.rect.x:
-        #                     sprite_2.rect.x = sprite_1.rect.x + sprite_1.rect.width
-        #                 elif sprite_1.rect.x > sprite_2.rect.x:
-        #                     sprite_2.rect.x = sprite_1.rect.x - sprite_1.rect.width
+        for value_list in v:
+            for value in value_list:
+                val_key = collision.get(value)
+                if val_key and collision.get(val_key[0]):
+                    collision.pop(val_key[0])
+        # print(collision)
+        for sprite_1, sprite_2_list in collision.items():
+            for sprite_2 in sprite_2_list:
+                if sprite_1.rect.x >= 0 and sprite_1.rect.right <= WIDTH or \
+                        sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH:
+                    if sprite_1.rect.x < sprite_2.rect.x:
+                        sprite_2.rect.x = sprite_1.rect.x + sprite_1.rect.width
+                    elif sprite_1.rect.x >= sprite_2.rect.x:
+                        sprite_2.rect.x = sprite_1.rect.x - sprite_1.rect.width
         for event in pygame.event.get():
             mouse_event = pygame.mouse.get_pressed()
             mouse_pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
                 self.running = False
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            # if event.button == 1 and self.clear_rect.collidepoint(mouse_pos):
-            #     self.elements_group.remove(*self.elements_group.sprites())
-            #     print('clear')
             elif event.type == ELEMENT_SELECTED:
                 self.selected_element = event.message
                 print(event.message)
