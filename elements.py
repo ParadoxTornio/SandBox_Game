@@ -33,9 +33,22 @@ class FireElement(Element):
     def __init__(self, name, image_path, pos):
         super().__init__(name, image_path, pos)
 
+    def update(self):
+        counter = 0
+        for i in range(10):
+            if counter == 10:
+                self.kill()
+            counter += 1
+        pygame.display.flip()
+
 
 class LiquidElement(Element):
     def __init__(self, name, image_path, pos, ph, liquidity):
         super().__init__(name, image_path, pos)
         self.ph = ph
         self.liquidity = liquidity
+
+    def update(self):
+        if self.rect.y <= 500:
+            # print(self.rect.center, id(self))
+            self.rect.y += self.liquidity // 5

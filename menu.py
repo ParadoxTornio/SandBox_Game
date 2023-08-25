@@ -100,7 +100,8 @@ class Menu:
         # self.menu_buttons_group.add(gunpowder_button)
 
     def draw(self):
-        self.menu_buttons_group.draw(self.screen)
+        if self.elements_button.is_open:
+            self.menu_buttons_group.draw(self.screen)
 
     def handle_events(self, event):
         for button in self.menu_buttons_group:
