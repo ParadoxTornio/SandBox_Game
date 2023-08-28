@@ -40,6 +40,7 @@ class Game:
         self.elements_group.update()
 
     def events(self):
+        self.elements_group.empty()
         for sprite_1 in self.elements_group:
             collision = pygame.sprite.spritecollide(sprite_1, self.elements_group, False, custom_collision)
             for sprite_2 in collision:
@@ -84,5 +85,4 @@ class Game:
 game = Game()
 while game.running:
     game.new()
-
 pygame.quit()
