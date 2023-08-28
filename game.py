@@ -40,16 +40,9 @@ class Game:
         self.elements_group.update()
 
     def events(self):
-        collision = pygame.sprite.groupcollide(self.elements_group, self.elements_group, False, False, custom_collision)
-        v = list(collision.values())
-        for value_list in v:
-            for value in value_list:
-                val_key = collision.get(value)
-                if val_key and collision.get(val_key[0]):
-                    collision.pop(val_key[0])
-        # print(collision)
-        for sprite_1, sprite_2_list in collision.items():
-            for sprite_2 in sprite_2_list:
+        for sprite_1 in self.elements_group:
+            collision = pygame.sprite.spritecollide(sprite_1, self.elements_group, False, custom_collision)
+            for sprite_2 in collision:
                 if sprite_1.rect.x >= 0 and sprite_1.rect.right <= WIDTH or \
                         sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH:
                     if sprite_1.rect.x < sprite_2.rect.x:
