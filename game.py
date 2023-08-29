@@ -41,9 +41,9 @@ class Game:
         self.elements_group.update()
 
     def events(self):
-        for sprite in self.elements_group:
-            sprite.remove(self.elements_group)
-            logger.success(f'sprite {sprite} deleted')
+        # for sprite in self.elements_group:
+        #     sprite.remove(self.elements_group)
+        #     logger.success(f'sprite {sprite} deleted')
         logger.info(len(self.elements_group))
         for sprite_1 in self.elements_group:
             collision = pygame.sprite.spritecollide(sprite_1, self.elements_group, False, custom_collision)

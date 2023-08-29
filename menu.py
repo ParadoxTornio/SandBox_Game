@@ -1,6 +1,6 @@
 import pygame
 from config import *
-from elements import SolidElement, LiquidElement, FireElement
+from elements import SolidElement, LiquidElement, FireElement, ExplodingElement
 
 ELEMENT_SELECTED = pygame.USEREVENT + 1
 
@@ -75,7 +75,8 @@ class Menu:
                              FireElement('огонь', 'images/fire_frame.png', [0, 0], 750, 'Fire'))
         metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',
                               SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5, 500, 'Solid'))
-        # c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4')
+        c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4',
+                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 10, 'Explosion'))
         # gunpowder_button = Button('images/element_buttons/gunpowder.png', (1000, 525), 'порох')
         # glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло')
         # buf_metal_button = Button('images/element_buttons/buffed_metal.png', (325, 525), 'металл+')
@@ -96,7 +97,7 @@ class Menu:
         # self.menu_buttons_group.add(lava_button)
         # self.menu_buttons_group.add(poison_button)
         # self.menu_buttons_group.add(stone_button)
-        # self.menu_buttons_group.add(c4_button)
+        self.menu_buttons_group.add(c4_button)
         # self.menu_buttons_group.add(gunpowder_button)
 
     def draw(self):
