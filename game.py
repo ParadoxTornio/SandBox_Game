@@ -1,8 +1,9 @@
 import pygame
+from loguru import logger
+import copy
 from config import *
 from menu import Menu, ELEMENT_SELECTED
 from utils import custom_collision
-import copy
 
 
 class Game:
@@ -31,16 +32,19 @@ class Game:
     def run(self):
         while self.running:
             self.clock.tick(FPS)
-            print(self.clock.get_fps())
-            self.events()
+            # print(self.clock.get_fps())
             self.update()
+            self.events()
             self.draw()
 
     def update(self):
         self.elements_group.update()
 
     def events(self):
-        self.elements_group.empty()
+        for sprite in self.elements_group:
+            sprite.remove(self.elements_group)
+            logger.success(f'sprite {sprite} deleted')
+        logger.info(len(self.elements_group))
         for sprite_1 in self.elements_group:
             collision = pygame.sprite.spritecollide(sprite_1, self.elements_group, False, custom_collision)
             for sprite_2 in collision:
@@ -76,6 +80,7 @@ class Game:
     def add_element(self):
         mouse_pos = pygame.mouse.get_pos()
         copy_element = copy.copy(self.selected_element)
+        copy_element.image = self.selected_element.image.copy()
         copy_element.rect = self.selected_element.rect.copy()
         copy_element.change_position(mouse_pos)
         self.elements_group.add(copy_element)

@@ -23,17 +23,34 @@ class Element(pygame.sprite.Sprite):
 
 
 class SolidElement(Element):
-    def __init__(self, name, image_path, pos, solidity, fragility):
+    def __init__(self, name, image_path, pos, solidity, fragility, temperature_resistance, element_type):
         super().__init__(name, image_path, pos)
         self.solidity = solidity
         self.fragility = fragility
+        self.temperature_resistance = temperature_resistance
+        self.element_type = element_type
+
+    def interaction(self, sprite_1, sprite_2):
+        if sprite_1.element_type != sprite_2.element_type:
+            if sprite_1.element_type == 'Solid' and \
+                    sprite_2.element_type == 'Liquid':
+                if self.solidity < sprite_2.ph:
+                    self.kill()
+            elif sprite_1.element_type == 'Solid' and \
+                    sprite_2.element_type == 'Fire':
+                if sprite_1.temperature_resistance <= sprite_2.temperature:
+                    self.kill()
 
 
 class FireElement(Element):
-    def __init__(self, name, image_path, pos):
+    def __init__(self, name, image_path, pos, temperature, element_type):
         super().__init__(name, image_path, pos)
         self.counter = 0
+        self.temperature = temperature
+        self.element_type = element_type
 
+    def kill(self):
+        pass
     # def update(self):
     #     print(self.counter)
     #     if self.counter == 60:
@@ -45,10 +62,11 @@ class FireElement(Element):
 
 
 class LiquidElement(Element):
-    def __init__(self, name, image_path, pos, ph, liquidity):
+    def __init__(self, name, image_path, pos, ph, liquidity, element_type):
         super().__init__(name, image_path, pos)
         self.ph = ph
         self.liquidity = liquidity
+        self.element_type = element_type
 
     def update(self):
         if self.rect.y <= 503:
