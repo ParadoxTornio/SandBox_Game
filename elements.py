@@ -1,5 +1,6 @@
 from config import *
 import pygame
+import time
 
 
 class Element(pygame.sprite.Sprite):
@@ -46,9 +47,9 @@ class SolidElement(Element):
 class FireElement(Element):
     def __init__(self, name, image_path, pos, temperature, element_type):
         super().__init__(name, image_path, pos)
-        self.counter = 0
         self.temperature = temperature
         self.element_type = element_type
+        self.time_on_screen = None
 
     def kill(self):
         pass
@@ -61,14 +62,11 @@ class FireElement(Element):
     #         if self.temperature_resistance <= sprite_2.temperature:
     #             self.kill()
 
-    # def update(self):
-    #     print(self.counter)
-    #     if self.counter == 60:
-    #         pygame.sprite.Sprite.kill(self)
-    #         self.counter = 0
-    #     else:
-    #         self.counter += 1
-    #     self.kill()
+    def update(self):
+        if not self.time_on_screen:
+            self.time_on_screen = time.perf_counter()
+        elif time.perf_counter() - self.time_on_screen >= 1.5:
+            pygame.sprite.Sprite.kill(self)
 
 
 class LiquidElement(Element):
@@ -102,3 +100,4 @@ class ExplodingElement(Element):
         super().__init__(name, image_path, pos)
         self.explosion_power = explosion_power
         self.element_type = element_type
+
