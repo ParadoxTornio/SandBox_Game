@@ -100,4 +100,3 @@ class ExplodingElement(Element):
         super().__init__(name, image_path, pos)
         self.explosion_power = explosion_power
         self.element_type = element_type
-
