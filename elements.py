@@ -21,6 +21,9 @@ class Element(pygame.sprite.Sprite):
         self.rect.x = pos[0]
         self.rect.y = pos[1]
 
+    def interaction(self, sprite_2):
+        pass
+
 
 class SolidElement(Element):
     def __init__(self, name, image_path, pos, solidity, fragility, temperature_resistance, element_type):
@@ -30,16 +33,14 @@ class SolidElement(Element):
         self.temperature_resistance = temperature_resistance
         self.element_type = element_type
 
-    def interaction(self, sprite_1, sprite_2):
-        if sprite_1.element_type != sprite_2.element_type:
-            if sprite_1.element_type == 'Solid' and \
-                    sprite_2.element_type == 'Liquid':
-                if sprite_1.solidity < sprite_2.ph:
-                    sprite_1.kill()
-            elif sprite_1.element_type == 'Solid' and \
-                    sprite_2.element_type == 'Fire':
-                if sprite_1.temperature_resistance <= sprite_2.temperature:
-                    sprite_1.kill()
+    def interaction(self, sprite_2):
+        if not isinstance(sprite_2, SolidElement):
+            if isinstance(sprite_2, LiquidElement):
+                if self.solidity < sprite_2.ph:
+                    self.kill()
+            elif isinstance(sprite_2, FireElement):
+                if self.temperature_resistance <= sprite_2.temperature:
+                    self.kill()
 
 
 class FireElement(Element):
@@ -52,6 +53,14 @@ class FireElement(Element):
     def kill(self):
         pass
 
+    # def interaction(self, sprite_2):
+    #     if isinstance(sprite_2, LiquidElement):
+    #         if self.solidity < sprite_2.ph:
+    #             self.kill()
+    #     elif isinstance(sprite_2, FireElement):
+    #         if self.temperature_resistance <= sprite_2.temperature:
+    #             self.kill()
+
     # def update(self):
     #     print(self.counter)
     #     if self.counter == 60:
@@ -63,26 +72,29 @@ class FireElement(Element):
 
 
 class LiquidElement(Element):
-    def __init__(self, name, image_path, pos, ph, liquidity, element_type):
+    def __init__(self, name, image_path, pos, ph, liquidity, evaporation_temperature, element_type):
         super().__init__(name, image_path, pos)
         self.ph = ph
         self.liquidity = liquidity
+        self.evaporation_temperature = evaporation_temperature
         self.element_type = element_type
 
     def update(self):
         if self.rect.y <= 503:
             self.rect.y += self.liquidity // 5
 
-    def interaction(self, sprite_1, sprite_2):
-        if sprite_1.element_type != sprite_2.element_type:
-            if sprite_1.element_type == 'Solid' and \
-                    sprite_2.element_type == 'Liquid':
-                if sprite_1.solidity < sprite_2.ph:
-                    sprite_1.kill()
-            elif sprite_1.element_type == 'Solid' and \
-                    sprite_2.element_type == 'Fire':
-                if sprite_1.temperature_resistance <= sprite_2.temperature:
-                    sprite_1.kill()
+    def interaction(self, sprite_2):
+        if isinstance(sprite_2, FireElement):
+            if sprite_2.temperature >= self.evaporation_temperature:
+                self.kill()
+                print('kill')
+        elif isinstance(sprite_2, LiquidElement):
+            if sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH or \
+                    self.rect.x >= 0 and self.rect.right <= WIDTH:
+                if sprite_2.rect.x < self.rect.x:
+                    self.rect.x = sprite_2.rect.x + sprite_2.rect.width
+                elif sprite_2.rect.x >= self.rect.x:
+                    self.rect.x = sprite_2.rect.x - sprite_2.rect.width
 
 
 class ExplodingElement(Element):

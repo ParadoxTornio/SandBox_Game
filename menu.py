@@ -70,7 +70,7 @@ class Menu:
 
     def create_buttons(self):
         water_button = Button('images/element_buttons/water.png', (100, 525), 'вода',
-                              LiquidElement('вода', 'images/water_frame.png', [0, 0], 15, 10, 'Liquid'))
+                              LiquidElement('вода', 'images/water_frame.png', [0, 0], 15, 10, 100, 'Liquid'))
         fire_button = Button('images/element_buttons/fire.png', (175, 525), 'огонь',
                              FireElement('огонь', 'images/fire_frame.png', [0, 0], 750, 'Fire'))
         metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',

@@ -1,5 +1,4 @@
 import pygame
-from loguru import logger
 import copy
 from config import *
 from menu import Menu, ELEMENT_SELECTED
@@ -41,19 +40,10 @@ class Game:
         self.elements_group.update()
 
     def events(self):
-        # for sprite in self.elements_group:
-        #     sprite.remove(self.elements_group)
-        #     logger.success(f'sprite {sprite} deleted')
-        logger.info(len(self.elements_group))
         for sprite_1 in self.elements_group:
             collision = pygame.sprite.spritecollide(sprite_1, self.elements_group, False, custom_collision)
             for sprite_2 in collision:
-                if sprite_1.rect.x >= 0 and sprite_1.rect.right <= WIDTH or \
-                        sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH:
-                    if sprite_1.rect.x < sprite_2.rect.x:
-                        sprite_2.rect.x = sprite_1.rect.x + sprite_1.rect.width
-                    elif sprite_1.rect.x >= sprite_2.rect.x:
-                        sprite_2.rect.x = sprite_1.rect.x - sprite_1.rect.width
+                sprite_1.interaction(sprite_2)
         for event in pygame.event.get():
             mouse_event = pygame.mouse.get_pressed()
             mouse_pos = pygame.mouse.get_pos()
