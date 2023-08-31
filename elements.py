@@ -100,3 +100,18 @@ class ExplodingElement(Element):
         super().__init__(name, image_path, pos)
         self.explosion_power = explosion_power
         self.element_type = element_type
+
+    def boom(self):
+        center = self.rect.center
+        self.rect.width = self.explosion_power * 12.5
+        self.rect.height = self.explosion_power * 12.5
+        self.rect.center = center
+
+    def interaction(self, sprite_2):
+        if isinstance(sprite_2, FireElement):
+            self.boom()
+            if isinstance(sprite_2, SolidElement):
+                if sprite_2.solidity < self.explosion_power:
+                    sprite_2.kill()
+                    self.kill()
+                    print('kill')
