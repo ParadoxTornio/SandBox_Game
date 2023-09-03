@@ -1,6 +1,7 @@
 import pygame
 from config import *
-from elements import SolidElement, LiquidElement, FireElement, ExplodingElement
+from elements import SolidElement, LiquidElement, FireElement, \
+    ExplodingElement, WoodElement, GlassElement, LavaElement
 
 ELEMENT_SELECTED = pygame.USEREVENT + 1
 
@@ -72,37 +73,45 @@ class Menu:
         water_button = Button('images/element_buttons/water.png', (100, 525), 'вода',
                               LiquidElement('вода', 'images/water_frame.png', [0, 0], 0, 10, 100))
         fire_button = Button('images/element_buttons/fire.png', (175, 525), 'огонь',
-                             FireElement('огонь', 'images/fire_frame.png', [0, 0], 750))
+                             FireElement('огонь', 'images/fire_frame.png', [0, 0], 1000))
         metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',
-                              SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5, 500))
+                              SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5, 500, True))
         c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4',
-                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 25))
+                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 50, False))
         gunpowder_button = Button('images/element_buttons/gunpowder.png', (1000, 525), 'порох',
-                                  ExplodingElement('порох', 'images/test_frame.png', [0, 0], 15))
-        # glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло', )
+                                  ExplodingElement('порох', 'images/gunpowder_frame.png', [0, 0], 15, True))
         buf_metal_button = Button('images/element_buttons/buffed_metal.png', (325, 525), 'металл+',
-                                  SolidElement('металл+', 'images/metal_frame.png', [0, 0], 50, 5, 3000))
-        # lava_button = Button('images/element_buttons/lava.png', (700, 525), 'лава', )
+                                  SolidElement('металл+', 'images/metal_plus_frame.png', [0, 0], 50, 5, 1250, True))
+        lava_button = Button('images/element_buttons/lava.png', (700, 525), 'лава',
+                             LavaElement('лава', 'images/lava_frame.png', [0, 0], 1200))
         poison_button = Button('images/element_buttons/poison.png', (775, 525), 'кислота',
                                LiquidElement('кислота', 'images/poison_frame.png', [0, 0], 30, 15, 350))
-        # bricks_button = Button('images/element_buttons/bricks.png', (550, 525), 'кирпичи', )
-        # concrete_button = Button('images/element_buttons/concrete.png', (400, 525), 'бетон', )
+        bricks_button = Button('images/element_buttons/bricks.png', (550, 525), 'кирпичи',
+                               SolidElement('кирпичи', 'images/bricks_frame.png', [0, 0], 10, 10, 2500, False))
+        concrete_button = Button('images/element_buttons/concrete.png', (400, 525), 'бетон',
+                                 SolidElement('бетон', 'images/concrete_frame.png', [0, 0], 25, 7, 2500, False))
         sand_button = Button('images/element_buttons/sand.png', (625, 525), 'песок',
-                             LiquidElement('песок', 'images/test_frame.png', [0, 0], 0, 10, 0))
-        # stone_button = Button('images/element_buttons/stone.png', (850, 525), 'камень', )
+                             LiquidElement('песок', 'images/sand_frame.png', [0, 0], 0, 10, 0))
+        oak_button = Button('images/element_buttons/oak.png', (1075, 525), 'дуб',
+                            WoodElement('дуб', 'images/oak_frame.png', [0, 0], 5, 900))
+        glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло',
+                              GlassElement('стекло', 'images/glass_frame.png', [0, 0], 5, 550))
+        stone_button = Button('images/element_buttons/stone.png', (850, 525), 'камень',
+                              SolidElement('камень', 'images/stone_frame.png', [0, 0], 15, 5, 2500, False))
         self.menu_buttons_group.add(water_button)
         self.menu_buttons_group.add(fire_button)
         self.menu_buttons_group.add(metal_button)
         self.menu_buttons_group.add(buf_metal_button)
-        # self.menu_buttons_group.add(concrete_button)
-        # self.menu_buttons_group.add(glass_button)
-        # self.menu_buttons_group.add(bricks_button)
+        self.menu_buttons_group.add(concrete_button)
+        self.menu_buttons_group.add(glass_button)
+        self.menu_buttons_group.add(bricks_button)
         self.menu_buttons_group.add(sand_button)
-        # self.menu_buttons_group.add(lava_button)
+        self.menu_buttons_group.add(lava_button)
         self.menu_buttons_group.add(poison_button)
-        # self.menu_buttons_group.add(stone_button)
+        self.menu_buttons_group.add(stone_button)
         self.menu_buttons_group.add(c4_button)
         self.menu_buttons_group.add(gunpowder_button)
+        self.menu_buttons_group.add(oak_button)
 
     def draw(self):
         if self.elements_button.is_open:

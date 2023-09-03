@@ -32,7 +32,6 @@ class Game:
     def run(self):
         while self.running:
             self.clock.tick(FPS)
-            # print(self.clock.get_fps())
             self.update()
             self.events()
             self.draw()

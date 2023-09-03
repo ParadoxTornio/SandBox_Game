@@ -32,15 +32,16 @@ class Element(pygame.sprite.Sprite):
 
 
 class SolidElement(Element):
-    def __init__(self, name, image_path, pos, solidity, fragility, temperature_resistance):
+    def __init__(self, name, image_path, pos, solidity, fragility, temperature_resistance, is_melting):
         super().__init__(name, image_path, pos)
         self.solidity = solidity
         self.fragility = fragility
         self.temperature_resistance = temperature_resistance
+        self.is_melting = is_melting
 
     def __copy__(self):
         new_instance = self.__class__(self.name, self.image_path, self.pos, self.solidity, self.fragility,
-                                      self.temperature_resistance)
+                                      self.temperature_resistance, self.is_melting)
         return new_instance
 
     def interaction(self, sprite_2):
@@ -51,8 +52,9 @@ class SolidElement(Element):
                 else:
                     sprite_2.gravity = False
             elif isinstance(sprite_2, FireElement):
-                if self.temperature_resistance <= sprite_2.temperature:
-                    self.kill()
+                if self.is_melting:
+                    if self.temperature_resistance <= sprite_2.temperature:
+                        self.kill()
 
 
 class FireElement(Element):
@@ -61,20 +63,9 @@ class FireElement(Element):
         self.temperature = temperature
         self.time_on_screen = None
 
-    def kill(self):
-        pass
-
     def __copy__(self):
         new_instance = self.__class__(self.name, self.image_path, self.pos, self.temperature)
         return new_instance
-
-    # def interaction(self, sprite_2):
-    #     if isinstance(sprite_2, LiquidElement):
-    #         if self.solidity < sprite_2.ph:
-    #             self.kill()
-    #     elif isinstance(sprite_2, FireElement):
-    #         if self.temperature_resistance <= sprite_2.temperature:
-    #             self.kill()
 
     def update(self):
         if not self.time_on_screen:
@@ -105,7 +96,7 @@ class LiquidElement(Element):
         if isinstance(sprite_2, FireElement):
             if sprite_2.temperature >= self.evaporation_temperature:
                 self.kill()
-                print('kill')
+                sprite_2.kill()
         elif isinstance(sprite_2, LiquidElement):
             if sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH or \
                     self.rect.x >= 0 and self.rect.right <= WIDTH:
@@ -116,17 +107,21 @@ class LiquidElement(Element):
 
 
 class ExplodingElement(Element):
-    def __init__(self, name, image_path, pos, explosion_power):
+    def __init__(self, name, image_path, pos, explosion_power, gravity):
         super().__init__(name, image_path, pos)
         self.explosion_power = explosion_power
+        self.gravity = gravity
 
     def __copy__(self):
-        new_instance = self.__class__(self.name, self.image_path, self.pos, self.explosion_power)
+        new_instance = self.__class__(self.name, self.image_path, self.pos, self.explosion_power, self.gravity)
         return new_instance
 
+    def update(self):
+        if self.gravity:
+            if self.rect.y <= 504:
+                self.rect.y += 1
+
     def explode(self):
-        # time_now = time.perf_counter()
-        # if time.perf_counter() - time_now >= 1:
         center = self.rect.center
         self.rect.width = self.explosion_power * 12.5
         self.rect.height = self.explosion_power * 12.5
@@ -135,12 +130,97 @@ class ExplodingElement(Element):
     def interaction(self, sprite_2):
         if isinstance(sprite_2, FireElement):
             self.explode()
-        # if isinstance(sprite_2, ExplodingElement):
-        #     sprite_2.explode()
         if isinstance(sprite_2, SolidElement):
-            if sprite_2.solidity < self.explosion_power:
+            if sprite_2.solidity <= self.explosion_power:
                 sprite_2.kill()
                 self.kill()
                 print('kill')
         if isinstance(sprite_2, SolidElement):
-            pass
+            sprite_2.kill()
+        if isinstance(sprite_2, WoodElement):
+            if self.explosion_power > sprite_2.solidity:
+                self.kill()
+                sprite_2.kill()
+        if isinstance(sprite_2, GlassElement):
+            if self.explosion_power >= sprite_2.solidity:
+                self.kill()
+                sprite_2.kill()
+        if isinstance(sprite_2, SolidElement):
+            sprite_2.kill()
+
+
+class WoodElement(Element):
+    def __init__(self, name, image_path, pos, solidity, temperature_resistance):
+        super().__init__(name, image_path, pos)
+        self.solidity = solidity
+        self.temperature_resistance = temperature_resistance
+
+    def __copy__(self):
+        new_instance = self.__class__(self.name, self.image_path, self.pos, self.solidity,
+                                      self.temperature_resistance)
+        return new_instance
+
+    def interaction(self, sprite_2):
+        if isinstance(sprite_2, FireElement):
+            if self.temperature_resistance < sprite_2.temperature:
+                self.kill()
+        elif isinstance(sprite_2, LiquidElement):
+            if self.solidity < sprite_2.ph:
+                self.kill()
+            else:
+                sprite_2.gravity = False
+
+
+class GlassElement(Element):
+    def __init__(self, name, image_path, pos, solidity, temperature_resistance):
+        super().__init__(name, image_path, pos)
+        self.solidity = solidity
+        self.temperature_resistance = temperature_resistance
+
+    def __copy__(self):
+        new_instance = self.__class__(self.name, self.image_path, self.pos, self.solidity,
+                                      self.temperature_resistance)
+        return new_instance
+
+    def interaction(self, sprite_2):
+        if isinstance(sprite_2, FireElement):
+            if sprite_2.temperature >= self.temperature_resistance:
+                self.kill()
+        if isinstance(sprite_2, LiquidElement):
+            if sprite_2.ph >= self.solidity * 10:
+                self.kill()
+            else:
+                sprite_2.gravity = False
+
+
+class LavaElement(Element):
+    def __init__(self, name, image_path, pos, temperature):
+        super().__init__(name, image_path, pos)
+        self.temperature = temperature
+        self.gravity = True
+
+    def update(self):
+        if self.gravity:
+            if self.rect.y <= 503:
+                self.rect.y += 1
+
+    def __copy__(self):
+        new_instance = self.__class__(self.name, self.image_path, self.pos, self.temperature)
+        return new_instance
+
+    def interaction(self, sprite_2):
+        if isinstance(sprite_2, LiquidElement):
+            sprite_2.kill()
+            self.kill()  # нужно сделать так чтобы на этом месте спавнился камень
+        if isinstance(sprite_2, SolidElement):
+            if sprite_2.is_melting:
+                if self.temperature >= sprite_2.temperature_resistance:
+                    sprite_2.kill()
+                else:
+                    self.gravity = False
+        if isinstance(sprite_2, WoodElement):
+            if self.temperature >= sprite_2.temperature_resistance:
+                sprite_2.kill()
+        if isinstance(sprite_2, GlassElement):
+            if self.temperature >= sprite_2.temperature_resistance:
+                sprite_2.kill()
