@@ -10,7 +10,6 @@ class Game:
         pygame.init()
         pygame.mixer.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.background = pygame.image.load('images/background_2.png')
         self.table_rect = pygame.rect.Rect(0, 82, 1280, 424)
@@ -18,6 +17,8 @@ class Game:
         self.clear_picture = pygame.image.load('images/musorka.png')
         self.clear_image = pygame.Surface((50, 50))
         self.clear_rect = self.clear_image.get_rect()
+        self.clear_rect.x = 25
+        self.clear_rect.y = 25
         self.menu = Menu(self.screen)
         print(self.clear_rect.center)
         pygame.display.flip()
@@ -37,6 +38,7 @@ class Game:
             self.draw()
 
     def update(self):
+        pygame.display.set_caption(str(self.clock.get_fps()))
         self.elements_group.update()
 
     def events(self):
@@ -58,6 +60,9 @@ class Game:
                     self.add_element()
                 elif mouse_event[2]:
                     self.selected_element = None
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and self.clear_rect.collidepoint(mouse_pos):
+                    self.elements_group.empty()
             self.menu.handle_events(event)
 
     def draw(self):
