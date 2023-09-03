@@ -77,7 +77,7 @@ class Menu:
         metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',
                               SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5, 500, True))
         c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4',
-                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 50, False))
+                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 15, False))
         gunpowder_button = Button('images/element_buttons/gunpowder.png', (1000, 525), 'порох',
                                   ExplodingElement('порох', 'images/gunpowder_frame.png', [0, 0], 15, True))
         buf_metal_button = Button('images/element_buttons/buffed_metal.png', (325, 525), 'металл+',

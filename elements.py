@@ -70,7 +70,7 @@ class FireElement(Element):
     def update(self):
         if not self.time_on_screen:
             self.time_on_screen = time.perf_counter()
-        elif time.perf_counter() - self.time_on_screen >= 5:
+        elif time.perf_counter() - self.time_on_screen >= 1:
             pygame.sprite.Sprite.kill(self)
 
 
