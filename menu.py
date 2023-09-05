@@ -59,7 +59,7 @@ class Menu:
         self.elements_button = MenuButton('images/button_0.png', (WIDTH - 75, 25), '', self)
         self.background_image = pygame.image.load('images/background.png')
         self.menu_buttons_group = pygame.sprite.Group()
-        self.menu_buttons_group.add(self.elements_button)
+        self.menu_buttons_group.add(self.elements_button)  # noqa
         self.draw()
         self.create_buttons()
 
@@ -98,20 +98,20 @@ class Menu:
                               GlassElement('стекло', 'images/glass_frame.png', [0, 0], 5, 550))
         stone_button = Button('images/element_buttons/stone.png', (850, 525), 'камень',
                               SolidElement('камень', 'images/stone_frame.png', [0, 0], 15, 5, 2500, False))
-        self.menu_buttons_group.add(water_button)
-        self.menu_buttons_group.add(fire_button)
-        self.menu_buttons_group.add(metal_button)
-        self.menu_buttons_group.add(buf_metal_button)
-        self.menu_buttons_group.add(concrete_button)
-        self.menu_buttons_group.add(glass_button)
-        self.menu_buttons_group.add(bricks_button)
-        self.menu_buttons_group.add(sand_button)
-        self.menu_buttons_group.add(lava_button)
-        self.menu_buttons_group.add(poison_button)
-        self.menu_buttons_group.add(stone_button)
-        self.menu_buttons_group.add(c4_button)
-        self.menu_buttons_group.add(gunpowder_button)
-        self.menu_buttons_group.add(oak_button)
+        self.menu_buttons_group.add(water_button)  # noqa
+        self.menu_buttons_group.add(fire_button)  # noqa
+        self.menu_buttons_group.add(metal_button)  # noqa
+        self.menu_buttons_group.add(buf_metal_button)  # noqa
+        self.menu_buttons_group.add(concrete_button)  # noqa
+        self.menu_buttons_group.add(glass_button)  # noqa
+        self.menu_buttons_group.add(bricks_button)  # noqa
+        self.menu_buttons_group.add(sand_button)  # noqa
+        self.menu_buttons_group.add(lava_button)  # noqa
+        self.menu_buttons_group.add(poison_button)  # noqa
+        self.menu_buttons_group.add(stone_button)  # noqa
+        self.menu_buttons_group.add(c4_button)  # noqa
+        self.menu_buttons_group.add(gunpowder_button)  # noqa
+        self.menu_buttons_group.add(oak_button)  # noqa
 
     def draw(self):
         if self.elements_button.is_open:

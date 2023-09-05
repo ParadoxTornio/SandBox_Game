@@ -20,7 +20,7 @@ class Game:
         self.clear_rect.x = 25
         self.clear_rect.y = 25
         self.menu = Menu(self.screen)
-        print(self.clear_rect.center)
+        # print(self.clear_rect.center)
         pygame.display.flip()
         self.running = True
         self.selected_element = None
@@ -52,7 +52,7 @@ class Game:
                 self.running = False
             elif event.type == ELEMENT_SELECTED:
                 self.selected_element = event.message
-                print(event.message)
+                # print(event.message)
             elif (mouse_event[0] or mouse_event[2]) and self.selected_element and \
                     self.table_rect.collidepoint(mouse_pos):
                 if mouse_event[0]:
@@ -73,12 +73,14 @@ class Game:
 
     def add_element(self):
         mouse_pos = pygame.mouse.get_pos()
+        x_cord = round(mouse_pos[0] // 8) * 8
+        y_cord = round(mouse_pos[1] // 8) * 8
         copy_element = copy.copy(self.selected_element)
         copy_element.image = self.selected_element.image.copy()
         copy_element.rect = self.selected_element.rect.copy()
-        copy_element.change_position(mouse_pos)
+        copy_element.change_position([x_cord, y_cord])
         self.elements_group.add(copy_element)
-        print(mouse_pos, copy_element.pos)
+        # print(mouse_pos, copy_element.pos)
 
 
 game = Game()

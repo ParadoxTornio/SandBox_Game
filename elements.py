@@ -31,6 +31,19 @@ class Element(pygame.sprite.Sprite):
         pass
 
 
+class SteamElement(Element):
+    def __init__(self, name, image_path, pos):
+        super().__init__(name, image_path, pos)
+        self.time_on_screen = None
+
+    def update(self):
+        self.rect.y -= 2
+        if not self.time_on_screen:
+            self.time_on_screen = time.perf_counter()
+        elif time.perf_counter() - self.time_on_screen >= 2.5:
+            pygame.sprite.Sprite.kill(self)
+
+
 class SolidElement(Element):
     def __init__(self, name, image_path, pos, solidity, fragility, temperature_resistance, is_melting):
         super().__init__(name, image_path, pos)
@@ -48,6 +61,10 @@ class SolidElement(Element):
         if not isinstance(sprite_2, SolidElement):
             if isinstance(sprite_2, LiquidElement):
                 if self.solidity < sprite_2.ph:
+                    try:
+                        self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
+                    except IndexError:
+                        pass
                     self.kill()
                 else:
                     sprite_2.gravity = False
@@ -86,6 +103,7 @@ class LiquidElement(Element):
         if self.gravity:
             if self.rect.y <= 503:
                 self.rect.y += self.liquidity // 5
+        self.gravity = True
 
     def __copy__(self):
         new_instance = self.__class__(self.name, self.image_path, self.pos, self.ph, self.liquidity,
@@ -95,6 +113,10 @@ class LiquidElement(Element):
     def interaction(self, sprite_2):
         if isinstance(sprite_2, FireElement):
             if sprite_2.temperature >= self.evaporation_temperature:
+                try:
+                    self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
+                except IndexError:
+                    pass
                 self.kill()
                 sprite_2.kill()
         elif isinstance(sprite_2, LiquidElement):
@@ -134,7 +156,6 @@ class ExplodingElement(Element):
             if sprite_2.solidity <= self.explosion_power:
                 sprite_2.kill()
                 self.kill()
-                print('kill')
         if isinstance(sprite_2, SolidElement):
             sprite_2.kill()
         if isinstance(sprite_2, WoodElement):
@@ -211,7 +232,13 @@ class LavaElement(Element):
     def interaction(self, sprite_2):
         if isinstance(sprite_2, LiquidElement):
             sprite_2.kill()
-            self.kill()  # нужно сделать так чтобы на этом месте спавнился камень
+            try:
+                self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
+                self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', [self.rect.x, self.rect.y]  # noqa
+                                                  , 15, 5, 2500, False))  # noqa
+            except IndexError:
+                pass
+            self.kill()
         if isinstance(sprite_2, SolidElement):
             if sprite_2.is_melting:
                 if self.temperature >= sprite_2.temperature_resistance:
