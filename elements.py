@@ -1,5 +1,6 @@
 from config import *
 import pygame
+import random
 import time
 
 
@@ -28,7 +29,8 @@ class Element(pygame.sprite.Sprite):
         return new_instance
 
     def interaction(self, sprite_2):
-        pass
+        if self.groups() == sprite_2.groups():
+            sprite_2.kill()
 
 
 class SteamElement(Element):
@@ -58,6 +60,7 @@ class SolidElement(Element):
         return new_instance
 
     def interaction(self, sprite_2):
+        super().interaction(sprite_2)
         if not isinstance(sprite_2, SolidElement):
             if isinstance(sprite_2, LiquidElement):
                 if self.solidity < sprite_2.ph:
@@ -68,6 +71,8 @@ class SolidElement(Element):
                     self.kill()
                 else:
                     sprite_2.gravity = False
+                    sprite_2.rect.y = self.rect.y - self.rect.height
+                    sprite_2.rect.x = sprite_2.previous_x_position
             elif isinstance(sprite_2, FireElement):
                 if self.is_melting:
                     if self.temperature_resistance <= sprite_2.temperature:
@@ -98,12 +103,19 @@ class LiquidElement(Element):
         self.liquidity = liquidity
         self.evaporation_temperature = evaporation_temperature
         self.gravity = True
+        self.direction = None
+        self.previous_x_position = self.pos[0]
 
     def update(self):
         if self.gravity:
             if self.rect.y <= 503:
                 self.rect.y += self.liquidity // 5
         self.gravity = True
+
+    def change_position(self, pos):
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+        self.previous_x_position = pos[0]
 
     def __copy__(self):
         new_instance = self.__class__(self.name, self.image_path, self.pos, self.ph, self.liquidity,
@@ -122,9 +134,15 @@ class LiquidElement(Element):
         elif isinstance(sprite_2, LiquidElement):
             if sprite_2.rect.x >= 0 and sprite_2.rect.right <= WIDTH or \
                     self.rect.x >= 0 and self.rect.right <= WIDTH:
-                if sprite_2.rect.x < self.rect.x:
+                self.previous_x_position = self.rect.x
+                if not self.direction:
+                    if random.random() <= 0.5:
+                        self.direction = 'Right'
+                    else:
+                        self.direction = 'Left'
+                elif self.direction == 'Right':
                     self.rect.x = sprite_2.rect.x + sprite_2.rect.width
-                elif sprite_2.rect.x >= self.rect.x:
+                else:
                     self.rect.x = sprite_2.rect.x - sprite_2.rect.width
 
 
@@ -150,6 +168,7 @@ class ExplodingElement(Element):
         self.rect.center = center
 
     def interaction(self, sprite_2):
+        super().interaction(sprite_2)
         if isinstance(sprite_2, FireElement):
             self.explode()
         if isinstance(sprite_2, SolidElement):
@@ -182,6 +201,7 @@ class WoodElement(Element):
         return new_instance
 
     def interaction(self, sprite_2):
+        super().interaction(sprite_2)
         if isinstance(sprite_2, FireElement):
             if self.temperature_resistance < sprite_2.temperature:
                 self.kill()
@@ -204,6 +224,7 @@ class GlassElement(Element):
         return new_instance
 
     def interaction(self, sprite_2):
+        super().interaction(sprite_2)
         if isinstance(sprite_2, FireElement):
             if sprite_2.temperature >= self.temperature_resistance:
                 self.kill()
@@ -233,8 +254,12 @@ class LavaElement(Element):
         if isinstance(sprite_2, LiquidElement):
             sprite_2.kill()
             try:
-                self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
-                self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', [self.rect.x, self.rect.y]  # noqa
+                if self.rect.y > sprite_2.rect.y:
+                    cords = [self.rect.x, self.rect.y]
+                else:
+                    cords = [sprite_2.rect.x, sprite_2.rect.y]
+                self.groups()[0].add(SteamElement('пар', 'images/пар.png', cords))  # noqa
+                self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', cords  # noqa
                                                   , 15, 5, 2500, False))  # noqa
             except IndexError:
                 pass
