@@ -29,7 +29,8 @@ class Element(pygame.sprite.Sprite):
         return new_instance
 
     def interaction(self, sprite_2):
-        if self.groups() == sprite_2.groups():
+        if self.groups() == sprite_2.groups() and \
+                self.__class__ == sprite_2.__class__:
             sprite_2.kill()
 
 
