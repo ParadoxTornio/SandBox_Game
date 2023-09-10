@@ -226,6 +226,11 @@ class GlassElement(Element):
 
     def interaction(self, sprite_2):
         super().interaction(sprite_2)
+        if not isinstance(sprite_2, GlassElement):
+            if isinstance(sprite_2, LiquidElement):
+                sprite_2.gravity = False
+                sprite_2.rect.y = self.rect.y - self.rect.height
+                sprite_2.rect.x = sprite_2.previous_x_position
         if isinstance(sprite_2, FireElement):
             if sprite_2.temperature >= self.temperature_resistance:
                 self.kill()
@@ -269,8 +274,8 @@ class LavaElement(Element):
             if sprite_2.is_melting:
                 if self.temperature >= sprite_2.temperature_resistance:
                     sprite_2.kill()
-                else:
-                    self.gravity = False
+            else:
+                self.gravity = False
         if isinstance(sprite_2, WoodElement):
             if self.temperature >= sprite_2.temperature_resistance:
                 sprite_2.kill()
