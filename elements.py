@@ -172,12 +172,10 @@ class ExplodingElement(Element):
         super().interaction(sprite_2)
         if isinstance(sprite_2, FireElement):
             self.explode()
-        if isinstance(sprite_2, SolidElement):
-            if sprite_2.solidity <= self.explosion_power:
-                sprite_2.kill()
-                self.kill()
-        if isinstance(sprite_2, SolidElement):
-            sprite_2.kill()
+        if isinstance(sprite_2, SolidElement):  # не взврывает камень
+            if self.explosion_power >= sprite_2.solidity:  # не взврывает камень
+                self.kill()  # не взврывает камень
+                sprite_2.kill()  # не взврывает камень
         if isinstance(sprite_2, WoodElement):
             if self.explosion_power > sprite_2.solidity:
                 self.kill()
@@ -186,8 +184,8 @@ class ExplodingElement(Element):
             if self.explosion_power >= sprite_2.solidity:
                 self.kill()
                 sprite_2.kill()
-        if isinstance(sprite_2, SolidElement):
-            sprite_2.kill()
+        else:
+            self.kill()
 
 
 class WoodElement(Element):
