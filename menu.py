@@ -87,9 +87,9 @@ class Menu:
         poison_button = Button('images/element_buttons/poison.png', (775, 525), 'кислота',
                                LiquidElement('кислота', 'images/poison_frame.png', [0, 0], 30, 15, 350))
         bricks_button = Button('images/element_buttons/bricks.png', (550, 525), 'кирпичи',
-                               SolidElement('кирпичи', 'images/bricks_frame.png', [0, 0], 10, 10, 2500, False))
+                               SolidElement('кирпичи', 'images/bricks_frame.png', [0, 0], 10, 10, 1000, False))
         concrete_button = Button('images/element_buttons/concrete.png', (400, 525), 'бетон',
-                                 SolidElement('бетон', 'images/concrete_frame.png', [0, 0], 25, 7, 2500, False))
+                                 SolidElement('бетон', 'images/concrete_frame.png', [0, 0], 25, 7, 1000, False))
         sand_button = Button('images/element_buttons/sand.png', (625, 525), 'песок',
                              LiquidElement('песок', 'images/sand_frame.png', [0, 0], 0, 10, 0))
         oak_button = Button('images/element_buttons/oak.png', (1075, 525), 'дуб',
@@ -97,7 +97,7 @@ class Menu:
         glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло',
                               GlassElement('стекло', 'images/glass_frame.png', [0, 0], 5, 550))
         stone_button = Button('images/element_buttons/stone.png', (850, 525), 'камень',
-                              SolidElement('камень', 'images/stone_frame.png', [0, 0], 15, 5, 2500, False))
+                              SolidElement('камень', 'images/stone_frame.png', [0, 0], 15, 5, 1000, False))
         self.menu_buttons_group.add(water_button)  # noqa
         self.menu_buttons_group.add(fire_button)  # noqa
         self.menu_buttons_group.add(metal_button)  # noqa

@@ -269,11 +269,8 @@ class LavaElement(Element):
                 pass
             self.kill()
         if isinstance(sprite_2, SolidElement):
-            if sprite_2.is_melting:
-                if self.temperature >= sprite_2.temperature_resistance:
-                    sprite_2.kill()
-            else:
-                self.gravity = False
+            if self.temperature >= sprite_2.temperature_resistance:
+                sprite_2.kill()
         if isinstance(sprite_2, WoodElement):
             if self.temperature >= sprite_2.temperature_resistance:
                 sprite_2.kill()
