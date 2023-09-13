@@ -30,7 +30,7 @@ class Element(pygame.sprite.Sprite):
 
     def interaction(self, sprite_2):
         if self.groups() == sprite_2.groups() and \
-                self.__class__ == sprite_2.__class__:
+                self.name == sprite_2.name:
             sprite_2.kill()
 
 
@@ -244,11 +244,21 @@ class LavaElement(Element):
         super().__init__(name, image_path, pos)
         self.temperature = temperature
         self.gravity = True
+        self.time_on_screen = None
 
     def update(self):
         if self.gravity:
             if self.rect.y <= 503:
                 self.rect.y += 1
+            else:
+                self.gravity = False
+        else:
+            if not self.time_on_screen:
+                self.time_on_screen = time.perf_counter()
+            elif time.perf_counter() - self.time_on_screen >= 3:
+                self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', [self.rect.x, self.rect.y]  # noqa
+                                                  , 15, 5, 1000, False))  # noqa
+                self.kill()
 
     def __copy__(self):
         new_instance = self.__class__(self.name, self.image_path, self.pos, self.temperature)
@@ -264,13 +274,15 @@ class LavaElement(Element):
                     cords = [sprite_2.rect.x, sprite_2.rect.y]
                 self.groups()[0].add(SteamElement('пар', 'images/пар.png', cords))  # noqa
                 self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', cords  # noqa
-                                                  , 15, 5, 2500, False))  # noqa
+                                                  , 15, 5, 1000, False))  # noqa
             except IndexError:
                 pass
             self.kill()
         if isinstance(sprite_2, SolidElement):
             if self.temperature >= sprite_2.temperature_resistance:
                 sprite_2.kill()
+            else:
+                self.gravity = False
         if isinstance(sprite_2, WoodElement):
             if self.temperature >= sprite_2.temperature_resistance:
                 sprite_2.kill()
