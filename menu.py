@@ -40,7 +40,7 @@ class MenuButton(Button):
     def __init__(self, image_path, position, text, menu_object):
         super().__init__(image_path, position, text)
         self.menu_object = menu_object
-        self.esc_picture = pygame.image.load('images/esc_button.png')
+        self.esc_picture = pygame.image.load('esc_button.png')
         self.is_open = False
 
     def click_action(self):
@@ -56,8 +56,8 @@ class MenuButton(Button):
 class Menu:
     def __init__(self, screen):
         self.screen = screen
-        self.elements_button = MenuButton('images/button_0.png', (WIDTH - 75, 25), '', self)
-        self.background_image = pygame.image.load('images/background.png')
+        self.elements_button = MenuButton('button_0.png', (WIDTH - 75, 25), '', self)
+        self.background_image = pygame.image.load('background.png')
         self.menu_buttons_group = pygame.sprite.Group()
         self.menu_buttons_group.add(self.elements_button)  # noqa
         self.draw()
@@ -70,34 +70,34 @@ class Menu:
         self.menu_buttons_group.clear(self.screen, self.background_image)
 
     def create_buttons(self):
-        water_button = Button('images/element_buttons/water.png', (100, 525), 'вода',
-                              LiquidElement('вода', 'images/water_frame.png', [0, 0], 0, 10, 100))
-        fire_button = Button('images/element_buttons/fire.png', (175, 525), 'огонь',
-                             FireElement('огонь', 'images/fire_frame.png', [0, 0], 1000))
-        metal_button = Button('images/element_buttons/metal.png', (250, 525), 'металл',
-                              SolidElement('металл', 'images/metal_frame.png', [0, 0], 10, 5, 500, True))
-        c4_button = Button('images/element_buttons/C4.png', (925, 525), 'С-4',
-                           ExplodingElement('C-4', 'images/C4_frame.png', [0, 0], 15, False))
-        gunpowder_button = Button('images/element_buttons/gunpowder.png', (1000, 525), 'порох',
-                                  ExplodingElement('порох', 'images/gunpowder_frame.png', [0, 0], 15, True))
-        buf_metal_button = Button('images/element_buttons/buffed_metal.png', (325, 525), 'металл+',
-                                  SolidElement('металл+', 'images/metal_plus_frame.png', [0, 0], 50, 5, 1250, True))
-        lava_button = Button('images/element_buttons/lava.png', (700, 525), 'лава',
-                             LavaElement('лава', 'images/lava_frame.png', [0, 0], 1200))
-        poison_button = Button('images/element_buttons/poison.png', (775, 525), 'кислота',
-                               LiquidElement('кислота', 'images/poison_frame.png', [0, 0], 30, 15, 350))
-        bricks_button = Button('images/element_buttons/bricks.png', (550, 525), 'кирпичи',
-                               SolidElement('кирпичи', 'images/bricks_frame.png', [0, 0], 10, 10, 1000, False))
-        concrete_button = Button('images/element_buttons/concrete.png', (400, 525), 'бетон',
-                                 SolidElement('бетон', 'images/concrete_frame.png', [0, 0], 25, 7, 1000, False))
-        sand_button = Button('images/element_buttons/sand.png', (625, 525), 'песок',
-                             LiquidElement('песок', 'images/sand_frame.png', [0, 0], 0, 10, 0))
-        oak_button = Button('images/element_buttons/oak.png', (1075, 525), 'дуб',
-                            WoodElement('дуб', 'images/oak_frame.png', [0, 0], 5, 900))
-        glass_button = Button('images/element_buttons/glass.png', (475, 525), 'стекло',
-                              GlassElement('стекло', 'images/glass_frame.png', [0, 0], 5, 550))
-        stone_button = Button('images/element_buttons/stone.png', (850, 525), 'камень',
-                              SolidElement('камень', 'images/stone_frame.png', [0, 0], 15, 5, 1000, False))
+        water_button = Button('water.png', (100, 525), 'вода',
+                              LiquidElement('вода', 'water_frame.png', [0, 0], 0, 10, 100))
+        fire_button = Button('fire.png', (175, 525), 'огонь',
+                             FireElement('огонь', 'fire_frame.png', [0, 0], 1000))
+        metal_button = Button('metal.png', (250, 525), 'металл',
+                              SolidElement('металл', 'metal_frame.png', [0, 0], 10, 5, 500, True))
+        c4_button = Button('C4.png', (925, 525), 'С-4',
+                           ExplodingElement('C-4', 'C4_frame.png', [0, 0], 15, False))
+        gunpowder_button = Button('gunpowder.png', (1000, 525), 'порох',
+                                  ExplodingElement('порох', 'gunpowder_frame.png', [0, 0], 15, True))
+        buf_metal_button = Button('buffed_metal.png', (325, 525), 'металл+',
+                                  SolidElement('металл+', 'metal_plus_frame.png', [0, 0], 50, 5, 1250, True))
+        lava_button = Button('lava.png', (700, 525), 'лава',
+                             LavaElement('лава', 'lava_frame.png', [0, 0], 1200))
+        poison_button = Button('poison.png', (775, 525), 'кислота',
+                               LiquidElement('кислота', 'poison_frame.png', [0, 0], 30, 15, 350))
+        bricks_button = Button('bricks.png', (550, 525), 'кирпичи',
+                               SolidElement('кирпичи', 'bricks_frame.png', [0, 0], 10, 10, 1000, False))
+        concrete_button = Button('concrete.png', (400, 525), 'бетон',
+                                 SolidElement('бетон', 'concrete_frame.png', [0, 0], 25, 7, 1000, False))
+        sand_button = Button('sand.png', (625, 525), 'песок',
+                             LiquidElement('песок', 'sand_frame.png', [0, 0], 0, 10, 0))
+        oak_button = Button('oak.png', (1075, 525), 'дуб',
+                            WoodElement('дуб', 'oak_frame.png', [0, 0], 5, 900))
+        glass_button = Button('glass.png', (475, 525), 'стекло',
+                              GlassElement('стекло', 'glass_frame.png', [0, 0], 5, 550))
+        stone_button = Button('stone.png', (850, 525), 'камень',
+                              SolidElement('камень', 'stone_frame.png', [0, 0], 15, 5, 1000, False))
         self.menu_buttons_group.add(water_button)  # noqa
         self.menu_buttons_group.add(fire_button)  # noqa
         self.menu_buttons_group.add(metal_button)  # noqa

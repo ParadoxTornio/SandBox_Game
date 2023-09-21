@@ -66,7 +66,7 @@ class SolidElement(Element):
             if isinstance(sprite_2, LiquidElement):
                 if self.solidity < sprite_2.ph:
                     try:
-                        self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
+                        self.groups()[0].add(SteamElement('пар', 'пар.png', [self.rect.x, self.rect.y]))  # noqa
                     except IndexError:
                         pass
                     self.kill()
@@ -127,7 +127,7 @@ class LiquidElement(Element):
         if isinstance(sprite_2, FireElement):
             if sprite_2.temperature >= self.evaporation_temperature:
                 try:
-                    self.groups()[0].add(SteamElement('пар', 'images/пар.png', [self.rect.x, self.rect.y]))  # noqa
+                    self.groups()[0].add(SteamElement('пар', 'пар.png', [self.rect.x, self.rect.y]))  # noqa
                 except IndexError:
                     pass
                 self.kill()
@@ -272,8 +272,8 @@ class LavaElement(Element):
                     cords = [self.rect.x, self.rect.y]
                 else:
                     cords = [sprite_2.rect.x, sprite_2.rect.y]
-                self.groups()[0].add(SteamElement('пар', 'images/пар.png', cords))  # noqa
-                self.groups()[0].add(SolidElement('камень', 'images/stone_frame.png', cords  # noqa
+                self.groups()[0].add(SteamElement('пар', 'пар.png', cords))  # noqa
+                self.groups()[0].add(SolidElement('камень', 'stone_frame.png', cords  # noqa
                                                   , 15, 5, 1000, False))  # noqa
             except IndexError:
                 pass
