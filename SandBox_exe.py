@@ -53,6 +53,6 @@ executables = [cx_Freeze.Executable('game.py',
                                     shortcut_dir='DesktopFolder',
                                     shortcut_name='SandBox')]
 cx_Freeze.setup(
-    name='SandBox', options={'build.exe': {'packages': ['pygame'],
+    name='SandBox', options={'build_exe': {'packages': ['pygame'],
                                            'include_files': all_files}},
     executables=executables)
